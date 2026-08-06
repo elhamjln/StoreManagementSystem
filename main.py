@@ -8,13 +8,17 @@ from typing import List
 # Create tables if they don't exist
 models.Base.metadata.create_all(bind=engine)
 
-app = FastAPI(title="Management System API with Schemas")
+app = FastAPI(
+    title="Store Management System",
+    description="RESTful Store Management API built with FastAPI, SQLAlchemy, SQLite and Docker.",
+    version="1.0.0"
+)
 
 @app.get("/")
 def home():
     return {"status": "Online", "database": "SQLite (Local File)", "message": "Schemas are ready!"}
 
-# --- Employee Endpoints ---
+
 @app.post("/employees/", response_model=schemas.EmployeeSchema)
 def create_employee(employee: schemas.EmployeeCreateSchema, db: Session = Depends(get_db)):
     db_employee = models.Employee(**employee.dict()) # Create model instance from schema
